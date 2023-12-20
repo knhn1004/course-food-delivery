@@ -21,7 +21,11 @@ defineProps({
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6">
-            <Link class="btn btn-primary" :href="route('admin.restaurants.create')">
+            <Link
+              class="btn btn-primary"
+              :href="route('admin.restaurants.create')"
+              v-if="can('restaurant.create')"
+            >
               Add New Restaurant
             </Link>
           </div>
@@ -55,6 +59,7 @@ defineProps({
                   <td>
                     <Link
                       :href="route('admin.restaurants.edit', restaurant)"
+                      v-if="can('restaurant.update')"
                       class="btn btn-secondary"
                     >
                       Edit
