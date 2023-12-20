@@ -48,13 +48,36 @@ defineProps({
                   </Link>
                 </div>
               </div>
-              <div>Add Product Button: Coming Soon</div>
+              <div>
+                <Link
+                  class="btn btn-secondary btn-sm"
+                  :href="route('vendor.products.create', { category_id: category.id })"
+                >
+                  Add Product to {{ category.name }}
+                </Link>
+              </div>
               <div class="flex flex-col gap-6">
                 <div
                   v-for="product in category.products"
                   :key="product.id"
                   class="flex items-center justify-between pb-6 border-b gap-4"
                 >
+                  <div class="flex gap-4">
+                    <Link
+                      :href="route('vendor.products.edit', product)"
+                      class="btn btn-secondary btn-sm"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      :href="route('vendor.products.destroy', product)"
+                      class="btn btn-danger btn-sm"
+                      method="delete"
+                      as="button"
+                    >
+                      Delete
+                    </Link>
+                  </div>
                   <div class="flex flex-col">
                     <div class="font-bold">{{ product.name }}</div>
                     <div class="">{{ (product.price / 100).toFixed(2) }} &euro;</div>
