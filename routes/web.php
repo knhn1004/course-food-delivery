@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RestaurantController; // Add this line
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::get('restaurant/{restaurant}', [RestaurantController::class, 'show'])
+    ->name('restaurant');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/vendor.php';
+require __DIR__ . '/customer.php';

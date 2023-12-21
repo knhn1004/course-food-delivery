@@ -14,6 +14,10 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use App\Enums\RoleName;
+use App\Models\Role;
+use Illuminate\Support\Facades\DB;
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -33,15 +37,21 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            $user->roles()->sync(Role::where('name', RoleName::CUSTOMER->value)->first());
+
+            return $user;
+        });
 
         event(new Registered($user));
 
