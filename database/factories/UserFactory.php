@@ -52,4 +52,11 @@ class UserFactory extends Factory
             $user->roles()->sync(Role::where('name', RoleName::VENDOR->value)->first());
         });
     }
+
+    public function staff()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->roles()->sync(Role::where('name', RoleName::STAFF->value)->first());
+        });
+    }
 }
