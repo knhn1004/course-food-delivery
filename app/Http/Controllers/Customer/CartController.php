@@ -6,9 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class CartController extends Controller
 {
+
+    public function index(): Response
+    {
+        return Inertia::render('Customer/Cart');
+    }
+
     public function add(Product $product): RedirectResponse
     {
         $this->authorize('cart.add');
@@ -38,6 +46,20 @@ class CartController extends Controller
         session()->push('cart.items', $item);
         session()->put('cart.restaurant_name', $restaurant->name);
         session()->put('cart.restaurant_id', $restaurant->id);
+
+        $this->updateTotal();
+
+        return back();
+    }
+
+    public function remove(string $uuid)
+    {
+        $items = collect(session('cart.items'))
+            ->reject(function ($item) use ($uuid) {
+                return $item['uuid'] == $uuid;
+            });
+
+        session(['cart.items' => $items->values()->toArray()]);
 
         $this->updateTotal();
 

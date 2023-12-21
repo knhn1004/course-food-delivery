@@ -65,4 +65,8 @@
   .alert-success {
     @apply text-green-600 border border-green-500 bg-green-50;
   }
+
+  .btn-sm {
+    @apply px-2 py-1 text-sm;
+  }
 }
