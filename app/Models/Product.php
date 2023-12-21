@@ -10,6 +10,7 @@ use App\Models\Category; // Import the Category class
 
 class Product extends Model
 {
+    use HasFactory;
 
     protected $fillable = ['category_id', 'name', 'price'];
 

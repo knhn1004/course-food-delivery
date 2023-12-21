@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Models\Restaurant;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
+    use HasFactory;
     protected $fillable = ['name'];
 
     public function restaurant(): BelongsTo
