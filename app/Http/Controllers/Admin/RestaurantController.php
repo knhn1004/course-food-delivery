@@ -59,7 +59,12 @@ class RestaurantController extends Controller
                 'address' => $validated['address'],
             ]);
 
-            $user->notify(new RestaurantOwnerInvitation($validated['restaurant_name']));
+            try {
+                $user->notify(new RestaurantOwnerInvitation($validated['restaurant_name']));
+            } catch (\Exception $e) {
+                // status message of not being able to send the email
+                return back()->withStatus('error: Failed to send invitation email');
+            }
         });
 
         return to_route('admin.restaurants.index');
