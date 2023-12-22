@@ -13,9 +13,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Enums\RoleName;
 use App\Models\Role;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // only for admin
+        return $this->isAdmin();
+    }
+
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
